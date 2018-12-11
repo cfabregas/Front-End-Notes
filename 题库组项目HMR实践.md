@@ -37,7 +37,7 @@ app.use(require("webpack-hot-middleware")(compiler))
 This is usually because the modules which have changed (and their parents) do not know how to hot reload themselves. See https://webpack.js.org/concepts/hot-module-replacement/ for more details.
 ```
 - 这是因为我们的项目是由 `React` 构建的，在触发热更新的时候， `webpack` 只更新js文件，并不会执行 `React` 的生命周期，所以无法触发视图层的重新渲染。
-- 但是来都来了，就再绕一个弯吧：[react-hot-loader](https://github.com/gaearon/react-hot-loader/)
+- 但是来都来了，就再绕一个弯吧：[react-hot-loader](https://github.com/gaearon/react-hot-loader/)。
 
 ## 第三步：React Hot Loader
 - 这是一个 `React` 高阶组件，作用是将组件暴露给 `HMR` 模块，实时更新 `React` 组件。首先照例安装（注意这个组件接下来会在项目中引入，所以应该作为常规依赖而非dev依赖。并且可以放心的是，这个组件不会再生产环境下生效。）：
@@ -70,9 +70,9 @@ export default hot(module)(App)
 ```plain text
 You cannot change <Router history>
 ```
-- 虽然不知道为什么，但是不怕，我们有 `Stack Overflow` 。通过指点我们得知， `Redux` 和 `React Redux` 在[更新文档](https://github.com/reduxjs/react-redux/releases/tag/v2.0.0)中强调，2.x之后就不再支持热更新了，因为会引起某些难以预测的问题。
+- 虽然不知道为什么，但是不怕，我们有 `Stack Overflow` 。经过热心网友的指点我们得知， `Redux` 和 `React Redux` 在[更新文档](https://github.com/reduxjs/react-redux/releases/tag/v2.0.0)中强调，2.x之后就不再支持热更新了，因为会引起某些难以预测的问题。
 - 所以，我们在根组件中启用热更新，无疑会暴露整个 `store` 和 `Router` ，那就再优化一下吧，来都来了。
-- 我尝试的做法是：只暴露路由文件下的 `Switch` 组件，毕竟根目录和路由文件在项目的日常维护的迭代中，大多数时候都不会去修改：
+- 我尝试的优化方法是：只暴露路由文件下的 `Switch` 组件，毕竟根目录和路由文件在项目的日常维护的迭代中，大多数时候都不会去修改：
 ```js
 // routers/index.js
 const Routers = () => {
