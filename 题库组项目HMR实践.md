@@ -76,6 +76,8 @@ You cannot change <Router history>
 - 我尝试的优化方法是：只暴露路由文件下的 `Switch` 组件，毕竟根目录和路由文件在项目的日常维护的迭代中，大多数时候都不会去修改：
 ```js
 // routers/index.js
+import { hot } from 'react-hot-loader'
+
 const Routers = () => {
   <Switch>
     <Route {...Props} />
