@@ -1,5 +1,5 @@
 ## 动机
-日常写需求，每次更新代码，想看看效果都需要刷新页面，不胜其扰，决定给题库的项目加上热更新模块，以提高开发效率。
+题库组的项目目前没有热更新模块，每次更新代码，想看效果的时候都需要刷新页面，不胜其扰，决定给题库的项目加上热更新模块，以提高开发效率。
 虽然没有遇到太大的困难，但也遇到了一点小问题，觉得有必要做一个记录。
 
 ## 第一步：官网文档
@@ -17,7 +17,7 @@ npm install --save-dev webpack-hot-middleware
 ```js
 entry: ['./src/index.js', 'webpack-hot-middleware/client'],
 plugins: [
-  new webpack.HotModuleReplacementPlugin()
+  new webpack.HotModuleReplacementPlugin(),
 ]
 ```
 - 在dev环境下的server配置文件下添以下配置：
@@ -27,7 +27,8 @@ var webpackConfig = require('./webpack.config')
 var compiler = webpack(webpackConfig)
 
 app.use(require("webpack-dev-middleware")(compiler, {
-  noInfo: true, publicPath: webpackConfig.output.publicPath
+  noInfo: true, 
+  publicPath: webpackConfig.output.publicPath,
 }))
 app.use(require("webpack-hot-middleware")(compiler))
 ```
@@ -48,7 +49,7 @@ npm install --save react-hot-loader
 ```js
 // .babelrc
 {
-  "plugins": ["react-hot-loader/babel"]
+  "plugins": ["react-hot-loader/babel"],
 }
 ```
 - 修改项目的根组件，使其暴露：
