@@ -1,4 +1,4 @@
-#题库项目HMR实践
+# 题库项目HMR实践
 
 ## 动机
 题库组的项目目前没有热更新模块，每次更新代码，想看效果的时候都需要刷新页面，不胜其扰，决定给题库的项目加上热更新模块，以提高开发效率。
@@ -29,7 +29,7 @@ var webpackConfig = require('./webpack.config')
 var compiler = webpack(webpackConfig)
 
 app.use(require("webpack-dev-middleware")(compiler, {
-  noInfo: true, 
+  noInfo: true,
   publicPath: webpackConfig.output.publicPath,
 }))
 app.use(require("webpack-hot-middleware")(compiler))
