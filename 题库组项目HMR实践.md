@@ -1,20 +1,25 @@
 # 题库项目HMR实践
 
+
 ## 动机
+
 题库组的项目目前没有热更新模块，每次更新代码，想看效果的时候都需要刷新页面，不胜其扰，决定给题库的项目加上热更新模块，以提高开发效率。
 实践的过程中，虽然没有遇到太大的困难，但也绕了一点弯子，所以觉得有必要做一个记录。
 
+
 ## 第一步：官网文档
+
 - 按照惯例，直接上 `webpack` 官网查热模块替换的文档：[热模块替换 | webpack 中文网](https://www.webpackjs.com/guides/hot-module-replacement/)。
 - 最简单的情况下，在 `webpack-dev-server` 环境下运行的项目，添加 `HMR` 就很轻松，但这并不适用于题库项目。
 - 因为我们的项目是通过 `webpack-dev-middleware` 运行在自定义服务器上的，所以我们要绕一点弯子：[webpack-hot-middleware](https://github.com/webpack-contrib/webpack-hot-middleware)。
 
+
 ## 第二步：Webpack Hot Middleware
+
 - 这是一个 `webpack` 插件包，首先我们安装这个插件：
 ```bash
 npm install --save-dev webpack-hot-middleware
 ```
-
 - 在dev环境下的webpack配置文件下添以下配置：
 ```js
 entry: ['./src/index.js', 'webpack-hot-middleware/client'],
@@ -42,7 +47,9 @@ This is usually because the modules which have changed (and their parents) do no
 - 这是因为我们的项目是由 `React` 构建的，在触发热更新的时候， `webpack` 只更新js文件，并不会执行 `React` 的生命周期，所以无法触发视图层的重新渲染。
 - 但是来都来了，就再绕一个弯吧：[react-hot-loader](https://github.com/gaearon/react-hot-loader/)。
 
+
 ## 第三步：React Hot Loader
+
 - 这是一个 `React` 高阶组件，作用是将组件暴露给 `HMR` 模块，实时更新 `React` 组件。首先照例安装（注意这个组件接下来会在项目中引入，所以应该作为常规依赖而非dev依赖。并且可以放心的是，这个组件不会再生产环境下生效。）：
 ```bash
 npm install --save react-hot-loader
@@ -68,7 +75,9 @@ export default hot(module)(App)
 ```
 - 运行代码：emmm...看上去没什么问题的样子。
 
+
 ## 第四步：优化
+
 - 这个时候项目其实已经可以正常运作了，然而每次热更新， `React` 都会报一个让强迫症无法忍受的的小 `error` ：
 ```plain text
 You cannot change <Router history>
