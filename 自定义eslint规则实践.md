@@ -17,13 +17,13 @@ render () {
 ```js
 // ES6
 import image from 'images/test.png'
+<img src={image} />
 
 // CommonJS
-retuire('images/test.png')
+<img src={require('images/test.png')}
 ```
 ```css
 // css
-
 div {
   background: url('~images/test.png');
   background: url('./images/test.png'); /* 经过 css-loader 解析 */
@@ -52,12 +52,48 @@ div {
 ## 那就手写一条eslint规则吧
 
 
-## 基础：AST
+## 基础知识储备： AST
 
+`AST` (抽象语法树，Abstract Syntax Tree)，你可以理解为这是 `JavaScript` 世界的最底层了，再往下，就是关于转换和编译的“黑魔法”领域了，告辞！
+
+`eslint` 规范代码的运行原理，是在预编译阶段将代码解析成 `AST` ，并遍历它做静态分析。想知道一段代码解析成 `AST` 后长什么样，可以借助这个网站在线查看：
+> [https://astexplorer.net/](https://astexplorer.net/)
+
+在这之前我也没有接触过 `AST` ，所以我需要参考一些文档，然后现学现卖，大约是以下几个：
+- [eslint 官方文档：创建规则](https://cn.eslint.org/docs/developer-guide/working-with-rules)
+- [前端代码质量进阶：自定义 eslint 规则校验业务逻辑](https://segmentfault.com/a/1190000014684778)
 
 ## 考虑到的情况
 
+上面提到的文档十分清晰和友好，所以相关的基础概念我也不再赘述，直接从业务角度上来讲，这条规则应该怎么实现。
 
-## 代码展示
+实际的业务代码中，静态图片的引用方式可能是多变的，比如以下几种方式必须都要覆盖到：
+```jsx
+render () {
+  const { test } = this.state
 
-[@zhike/eslint-plugin/use-images-by-require](https://github.com/zhike-team/eslint-plugin-zhike/blob/master/rules/use-images-by-require.js)
+  return (
+    <div>
+      {/* 字面量 */}
+      <img src='/images/test.png' />
+
+      {/* 模板语法 */}
+      <img src={`/images/test.png`} />
+      <img src={`/images/${test}.png`} />
+
+      {/* 与或表达式 */}
+      <img src={test || '/image/test.png'} />
+      <img src={test && '/image/test.png'} />
+
+      {/* 三元表达式 */}
+      <img src={test ? test : '/images/test.png'} />
+    </div>
+  )
+}
+```
+
+很明显，包括但不限于上述的引用方式，都是不合法的，都需要筛选出来并予以警告。之所以说不限于，是因为这里没法列举所有可能性，因为比如模板语法可以实现嵌套，三元表达式也可能有多层判断，这些都需要用递归的方式深挖，不能轻易放过。
+
+## 项目代码展示
+
+[use-images-by-require](https://github.com/zhike-team/eslint-plugin-zhike/blob/master/rules/use-images-by-require.js)
