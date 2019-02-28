@@ -59,3 +59,5 @@ div {
 
 
 ## 代码展示
+
+[@zhike/eslint-plugin/use-images-by-require](https://github.com/zhike-team/eslint-plugin-zhike/blob/master/rules/use-images-by-require.js)
