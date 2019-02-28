@@ -57,11 +57,13 @@ div {
 `AST` (抽象语法树，Abstract Syntax Tree)，你可以理解为这是 `JavaScript` 世界的最底层了，再往下，就是关于转换和编译的“黑魔法”领域了，告辞！
 
 `eslint` 规范代码的运行原理，是在预编译阶段将代码解析成 `AST` ，并遍历它做静态分析。想知道一段代码解析成 `AST` 后长什么样，可以借助这个网站在线查看：
+
 > [https://astexplorer.net/](https://astexplorer.net/)
 
 在这之前我也没有接触过 `AST` ，所以我需要参考一些文档，然后现学现卖，大约是以下几个：
-- [eslint 官方文档：创建规则](https://cn.eslint.org/docs/developer-guide/working-with-rules)
-- [前端代码质量进阶：自定义 eslint 规则校验业务逻辑](https://segmentfault.com/a/1190000014684778)
+
+> [eslint 官方文档：创建规则](https://cn.eslint.org/docs/developer-guide/working-with-rules)
+> [前端代码质量进阶：自定义 eslint 规则校验业务逻辑](https://segmentfault.com/a/1190000014684778)
 
 ## 考虑到的情况
 
